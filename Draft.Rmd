@@ -34,11 +34,16 @@ description <- data.frame(variables, info, type)
 ```{r}
 kable(description, caption = "Table 1.1 Description of the main variables in the original dataset")
 ```
-### Quality of the dataset - missing values overview
+### Quality of the dataset - missing values overview and frequency distribution of numeric values
 
 ```{r}
 df2 %>% 
   skimr::skim_without_charts() 
+```
+
+### Some value are non-zero but include zeros. The next table checks the zero values and the quantity of unique values.
+```{r}
+kable(funModeling::df_status(df))
 ```
 
 ## 1.2 Dataset for 7 Central European countries
