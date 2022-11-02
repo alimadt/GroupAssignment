@@ -31,7 +31,7 @@ type <- c('numeric', 'string', 'string', 'binary', 'binary', 'string',
           'numeric', 'string', 'numeric', 'string', 'numeric', 'numeric')
 description <- data.frame(variables, info, type)
 ```
-```{r}
+```{r include=FALSE}
 kable(description, caption = "Description of the main variables in the original dataset")
 ```
 
@@ -53,7 +53,7 @@ df2 <- df %>% filter(addresscountryname %in%
 ```
 
 ### • The folowing manipulations were carried out on the original data to change the existing variables and to add new ones:
-* The type of the variables *center1distance* and *guestreviewrating* were changed from 'string' to 'numeric'
+* The type of the variables *center1distance* and *guestreviewsrating* were changed from 'string' to 'numeric'. The new variable names are *distance* and *actualrating * respectively.
 ```{r include=FALSE}
 # guestreviewrating separation
 df2 <- separate(df2, guestreviewsrating, ' /', into =
@@ -95,11 +95,11 @@ df2 <- df2 %>%
 * With the help of the existing *starrating* variable new *class* variable was generated
 ```{r}
 df2 <- df2 %>%
-  mutate(class = case_when(starrating == 0.0 | starrating == 1.0 ~ 'tourist',
-                           starrating == 1.5 | starrating == 2.0 ~ 'standard',
-                           starrating == 2.5 | starrating == 3.0 ~ 'comfort',
-                           starrating == 3.5 | starrating == 4.0 ~ 'first class',
-                           starrating == 4.5 | starrating == 5.0 ~ 'luxury'))
+  mutate(class = case_when(starrating == 1.0 | starrating == 1.5 ~ 'tourist',
+                           starrating == 2.0 | starrating == 2.5 ~ 'standard',
+                           starrating == 3.0 | starrating == 3.5 ~ 'comfort',
+                           starrating == 4.0 | starrating == 4.5 ~ 'first class',
+                           starrating == 5.0 ~ 'luxury'))
 ```
 
 ### • Quality of the dataset - missing values overview and frequency distribution of numeric values
@@ -109,38 +109,49 @@ df2 %>%
   skimr::skim_without_charts() 
 ```
 
-## Summary of the transformed dataset
-```{r}
+## Summary for the main variables in the transformed dataset
+### __Numeric variables__
+```{r echo=FALSE}
 datasummary(distance + starrating + actualrating + trueprice ~ Mean + Min + Max + SD, data = df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
-### • Histogram for distances
-```{r}
+* Distance
+75% of the hotels are located between 0 and 2.4 miles from the main city center. 
+The histogram below shows the distribution of the distances from the city center, the limit for x-axis was set at 25 miles.
+```{r echo=FALSE}
 ggplot(data=df2, aes(x=distance)) + geom_histogram(fill='navyblue', color='white', bins = 35) + 
   labs(x='Distance', y='Count')
 ```
 
-### • Histogram for starrating
-```{r}
+* Starrating
+Most of hotels from the dataset have 3 and 4 stars.
+```{r echo=FALSE}
 ggplot(data=df2, aes(x=starrating)) + geom_histogram(fill='navyblue', color='white', bins = 35) + 
-  labs(x='Stars', y='Count')
+  labs(x='Stars', y='Count') + xlim(1,5)
 ```
 
-### • Histogram for guest ratings
-```{r message=FALSE}
+* Actualrating
+As we can see from the histogram below, 80% of the guest reviews are between 3.4 and 4.1.
+```{r echo=FASLE, message=FALSE}
 ggplot(data=df2, aes(x=actualrating)) + geom_histogram(fill='navyblue', color='white') + 
   labs(x='Guest reviews', y='Count')
 ```
 
-### • Histogram for prices
-```{r message=FALSE}
-ggplot(data=df2, aes(x=trueprice)) + geom_histogram(fill='navyblue', color='white') + 
-  labs(x='Price', y='Count') 
+* Trueprice
+99% of the prices are below 600 EUR, thus, the limit for x-axis in histogram was set to this value.
+The distribution of the prices is skewed to the right, therefore, we can conclude that the mean price is greater then the mode.
+```{r echo=FALSE, message=FALSE}
 ggplot(data=df2, aes(x=trueprice)) + geom_histogram(fill='navyblue', color='white') + 
   labs(x='Price', y='Count') + xlim(0, 1200) 
 ```
-
+* Year and month
+```{r echo=FALSE}
+kable(count(df2, year))
+```
+```{r echo=FALSE}
+kable(count(df2, month))
+```
 ### • Accommodation type
 ```{r echo=FALSE}
 kable(count(df2,acctype_f) %>% arrange(desc(n)))
@@ -158,13 +169,7 @@ kable(count(df2, weekend))
 ```{r echo=FALSE}
 kable(count(df2, holiday))
 ```
-### • Year and month
-```{r echo=FALSE}
-kable(count(df2, year))
-```
-```{r echo=FALSE}
-kable(count(df2, month))
-```
+
 ### • Season and class
 ```{r echo=FALSE}
 kable(count(df2, season) %>% arrange(desc(n)))
