@@ -118,7 +118,7 @@ datasummary(distance + starrating + actualrating + trueprice ~ Mean + Min + Max 
 
 ### • Distance
 ### 75% of the hotels are located between 0 and 2.4 miles from the main city center. 
-The histogram below shows the distribution of the distances from the city center, the limit for x-axis was set at 25 miles.
+### The histogram below shows the distribution of the distances from the city center, the limit for x-axis was set at 25 miles.
 ```{r echo=FALSE}
 ggplot(data=df2, aes(x=distance)) + geom_histogram(fill='navyblue', color='white', bins = 35) + 
   labs(x='Distance', y='Count')
@@ -145,6 +145,7 @@ ggplot(data=df2, aes(x=actualrating)) + geom_histogram(fill='navyblue', color='w
 ggplot(data=df2, aes(x=trueprice)) + geom_histogram(fill='navyblue', color='white') + 
   labs(x='Price', y='Count') + xlim(0, 1200) 
 ```
+
 ### • Year and month
 ```{r echo=FALSE}
 kable(count(df2, year))
@@ -178,15 +179,11 @@ kable(count(df2, season) %>% arrange(desc(n)))
 kable(count(df2, class))
 ```
 
-## Findings
+## 1.3 Findings
 ### • Mean prices for countries
-```{r}
-datasummary(trueprice*addresscountryname ~ Mean + Max + Min, data=df2)
-```
-
-### • Ratings for diff countries
-```{r}
-datasummary(actualrating*addresscountryname ~ Mean, data=df2)
+```{r echo=FALSE}
+datasummary(trueprice*addresscountryname ~ Mean + Max + Min, data=df2) %>%
+   kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
 ### • Plot for diff years diff countries
