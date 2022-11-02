@@ -110,7 +110,7 @@ df2 %>%
 ```
 
 ## • Summary for the main variables in the transformed dataset
-## __Numeric variables__
+## *Numeric variables*
 ```{r echo=FALSE}
 datasummary(distance + starrating + actualrating + trueprice ~ Mean + Min + Max + SD, data = df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
@@ -153,6 +153,9 @@ kable(count(df2, year))
 ```{r echo=FALSE}
 kable(count(df2, month))
 ```
+
+### *Factor variables*
+
 ### • Accommodation type
 ```{r echo=FALSE}
 kable(count(df2,acctype_f) %>% arrange(desc(n)))
@@ -163,20 +166,22 @@ kable(count(df2,acctype_f) %>% arrange(desc(n)))
 kable(count(df2, addresscountryname) %>% arrange(desc(n)))
 ```
 
-### • Weekend and holiday
-```{r echo=FALSE}
-kable(count(df2, weekend))
-```
-```{r echo=FALSE}
-kable(count(df2, holiday))
-```
-
 ### • Season and class
 ```{r echo=FALSE}
 kable(count(df2, season) %>% arrange(desc(n)))
 ```
 ```{r echo=FALSE}
 kable(count(df2, class))
+```
+
+### *Binary variables*
+
+### • Weekend and holiday
+```{r echo=FALSE}
+kable(count(df2, weekend))
+```
+```{r echo=FALSE}
+kable(count(df2, holiday))
 ```
 
 ## 1.3 Findings
@@ -199,15 +204,17 @@ ggplot(data = df3, aes(x=year, y=trueprice, fill=addresscountryname)) +
 ```
 
 ### • Mean prices for diff seasons
-```{r}
+```{r echo=FALSE}
 datasummary(trueprice*season ~ Mean, data=df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
 ### • Plot for classes
-```{r message=FALSE}
+```{r echo=FALSE, message=FALSE}
 datasummary(trueprice*class ~ Mean, data = df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
+```
+```{r echo=FALSE}
 ggplot(data = df2, aes(x=reorder(class, +trueprice), y=trueprice, fill = class)) + 
   geom_bar(stat = 'summary') + labs(x='Class', y='Price', fill = 'Class')
 ```
