@@ -109,14 +109,14 @@ df2 %>%
   skimr::skim_without_charts() 
 ```
 
-## Summary for the main variables in the transformed dataset
-### __Numeric variables__
+## • Summary for the main variables in the transformed dataset
+## __Numeric variables__
 ```{r echo=FALSE}
 datasummary(distance + starrating + actualrating + trueprice ~ Mean + Min + Max + SD, data = df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
-* Distance
+### • Distance
 75% of the hotels are located between 0 and 2.4 miles from the main city center. 
 The histogram below shows the distribution of the distances from the city center, the limit for x-axis was set at 25 miles.
 ```{r echo=FALSE}
@@ -124,28 +124,28 @@ ggplot(data=df2, aes(x=distance)) + geom_histogram(fill='navyblue', color='white
   labs(x='Distance', y='Count')
 ```
 
-* Starrating
+### • Starrating
 Most of hotels from the dataset have 3 and 4 stars.
 ```{r echo=FALSE}
 ggplot(data=df2, aes(x=starrating)) + geom_histogram(fill='navyblue', color='white', bins = 35) + 
   labs(x='Stars', y='Count') + xlim(1,5)
 ```
 
-* Actualrating
+### • Actualrating
 As we can see from the histogram below, 80% of the guest reviews are between 3.4 and 4.1.
-```{r echo=FASLE, message=FALSE}
+```{r echo=FALSE, message=FALSE}
 ggplot(data=df2, aes(x=actualrating)) + geom_histogram(fill='navyblue', color='white') + 
   labs(x='Guest reviews', y='Count')
 ```
 
-* Trueprice
+### • Trueprice
 99% of the prices are below 600 EUR, thus, the limit for x-axis in histogram was set to this value.
 The distribution of the prices is skewed to the right, therefore, we can conclude that the mean price is greater then the mode.
 ```{r echo=FALSE, message=FALSE}
 ggplot(data=df2, aes(x=trueprice)) + geom_histogram(fill='navyblue', color='white') + 
   labs(x='Price', y='Count') + xlim(0, 1200) 
 ```
-* Year and month
+### • Year and month
 ```{r echo=FALSE}
 kable(count(df2, year))
 ```
