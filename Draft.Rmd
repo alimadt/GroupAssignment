@@ -66,8 +66,11 @@ df2 <- separate(df2, center1distance, ' ', into =
                   c('distance', 'miles'))
 df2 <- select(df2, -miles)
 df2$distance <- as.numeric(df2$distance)
+
+df2$country <- as.factor(df2$addresscountryname)
+df2 <- select(df2, -addresscountryname)
 ```
-* The original *accommodationtype* variable was tranformed into new *accomtype* factor variable.
+* The original *accommodationtype* variable was tranformed into new *acctype_f* factor variable.
 ```{r}
 df2 <- separate(df2, accommodationtype, '@', into = 
                  c('word', 'acctype'))
@@ -91,6 +94,7 @@ df2 <- df2 %>%
                             month == 3 | month == 4 |month == 5 ~ 'spring',
                             month == 6 | month == 7 |month == 8 ~ 'summer',
                             month == 9 | month == 10 |month == 11 ~ 'autumn'))
+df2$season <- as.factor(df2$season)
 ```
 * With the help of the existing *starrating* variable new *class* variable was generated
 ```{r}
@@ -100,6 +104,7 @@ df2 <- df2 %>%
                            starrating == 3.0 | starrating == 3.5 ~ 'comfort',
                            starrating == 4.0 | starrating == 4.5 ~ 'first class',
                            starrating == 5.0 ~ 'luxury'))
+df2$class <- as.factor(df2$class)
 ```
 
 ### • Quality of the dataset - missing values overview and frequency distribution of numeric values
@@ -154,7 +159,7 @@ kable(count(df2, year))
 kable(count(df2, month))
 ```
 
-### *Factor variables*
+## *Factor variables*
 
 ### • Accommodation type
 ```{r echo=FALSE}
@@ -163,7 +168,7 @@ kable(count(df2,acctype_f) %>% arrange(desc(n)))
 
 ### • Country
 ```{r echo=FALSE}
-kable(count(df2, addresscountryname) %>% arrange(desc(n)))
+kable(count(df2, country) %>% arrange(desc(n)))
 ```
 
 ### • Season and class
@@ -174,7 +179,7 @@ kable(count(df2, season) %>% arrange(desc(n)))
 kable(count(df2, class))
 ```
 
-### *Binary variables*
+## *Binary variables*
 
 ### • Weekend and holiday
 ```{r echo=FALSE}
@@ -187,19 +192,19 @@ kable(count(df2, holiday))
 ## 1.3 Findings
 ### • Mean prices for countries
 ```{r echo=FALSE}
-datasummary(trueprice*addresscountryname ~ Mean + Max + Min, data=df2) %>%
+datasummary(trueprice*country ~ Mean + Max + Min, data=df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
 ### • Plot for diff years diff countries
 ```{r}
-df3 <- aggregate(trueprice ~ addresscountryname + year, 
+df3 <- aggregate(trueprice ~ country + year, 
                  data=df2, 
                  function(x) { 
                    c(mean_price = mean(x)) 
                  })
-ggplot(data = df3, aes(x=year, y=trueprice, fill=addresscountryname)) + 
-  geom_bar(stat='identity') + facet_wrap(~addresscountryname) +
+ggplot(data = df3, aes(x=year, y=trueprice, fill=country)) + 
+  geom_bar(stat='identity') + facet_wrap(~country) +
   geom_text(aes(label = round(trueprice)), vjust = -0.2)
 ```
 
