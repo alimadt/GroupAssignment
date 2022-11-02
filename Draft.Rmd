@@ -31,7 +31,7 @@ type <- c('numeric', 'string', 'string', 'binary', 'binary', 'string',
           'numeric', 'string', 'numeric', 'string', 'numeric', 'numeric')
 description <- data.frame(variables, info, type)
 ```
-```{r include=FALSE}
+```{r echo=FALSE}
 kable(description, caption = "Description of the main variables in the original dataset")
 ```
 
@@ -117,7 +117,7 @@ datasummary(distance + starrating + actualrating + trueprice ~ Mean + Min + Max 
 ```
 
 ### • Distance
-75% of the hotels are located between 0 and 2.4 miles from the main city center. 
+### 75% of the hotels are located between 0 and 2.4 miles from the main city center. 
 The histogram below shows the distribution of the distances from the city center, the limit for x-axis was set at 25 miles.
 ```{r echo=FALSE}
 ggplot(data=df2, aes(x=distance)) + geom_histogram(fill='navyblue', color='white', bins = 35) + 
@@ -125,22 +125,22 @@ ggplot(data=df2, aes(x=distance)) + geom_histogram(fill='navyblue', color='white
 ```
 
 ### • Starrating
-Most of hotels from the dataset have 3 and 4 stars.
+### Most of hotels from the dataset have 3 and 4 stars.
 ```{r echo=FALSE}
 ggplot(data=df2, aes(x=starrating)) + geom_histogram(fill='navyblue', color='white', bins = 35) + 
   labs(x='Stars', y='Count') + xlim(1,5)
 ```
 
 ### • Actualrating
-As we can see from the histogram below, 80% of the guest reviews are between 3.4 and 4.1.
+### As we can see from the histogram below, 80% of the guest reviews are between 3.4 and 4.1.
 ```{r echo=FALSE, message=FALSE}
 ggplot(data=df2, aes(x=actualrating)) + geom_histogram(fill='navyblue', color='white') + 
   labs(x='Guest reviews', y='Count')
 ```
 
 ### • Trueprice
-99% of the prices are below 600 EUR, thus, the limit for x-axis in histogram was set to this value.
-The distribution of the prices is skewed to the right, therefore, we can conclude that the mean price is greater then the mode.
+### 99% of the prices are below 600 EUR, thus, the limit for x-axis in histogram was set to this value.
+### The distribution of the prices is skewed to the right, therefore, we can conclude that the mean price is greater then the mode.
 ```{r echo=FALSE, message=FALSE}
 ggplot(data=df2, aes(x=trueprice)) + geom_histogram(fill='navyblue', color='white') + 
   labs(x='Price', y='Count') + xlim(0, 1200) 
