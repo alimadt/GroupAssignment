@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
 ## 1.1 Overview of the original data.
 ### The original hotels-europe data includes information on price and features of hotels in 46 European cities and for 2017-2018. The data was downloaded from https://osf.io/yzntm/download.
-### Table 1.1 shows the main variables, their description and type.
+
 ```{r include=FALSE}
 variables <- c('hotel_id','accommodation_type', 'addresscountryname', 'weekend', 'holiday',
                'center1distance', 'starrating', 'guestreviewrating', 'price', 'price_night',
@@ -32,30 +32,27 @@ type <- c('numeric', 'string', 'string', 'binary', 'binary', 'string',
 description <- data.frame(variables, info, type)
 ```
 ```{r}
-kable(description, caption = "Table 1.1 Description of the main variables in the original dataset")
-```
-### Quality of the dataset - missing values overview and frequency distribution of numeric values
-
-```{r}
-df2 %>% 
-  skimr::skim_without_charts() 
+kable(description, caption = "Description of the main variables in the original dataset")
 ```
 
-### Some value are non-zero but include zeros. The next table checks the zero values and the quantity of unique values.
+### • Some value are non-zero but include zeros. The next table checks the zero values and the quantity of unique values.
+```{r include=FALSE}
+df <- read.csv('https://osf.io/yzntm/download')
+```
 ```{r}
 kable(funModeling::df_status(df))
 ```
 
 ## 1.2 Dataset for 7 Central European countries
-### For our analysis we used 7 Central European countries: Czech Republic, Germany, Italy, Hungary, Austria, Poland, Slovakia.
+### • For our analysis we used 7 Central European countries: Czech Republic, Germany, Italy, Hungary, Austria, Poland, Slovakia.
 ```{r}
-df <- read.csv('https://osf.io/yzntm/download')
 df2 <- df %>% filter(addresscountryname %in% 
                        c('Czech Republic', 'Germany', 'Italy', 
                          'Hungary', 'Austria', 'Poland', 'Slovakia'))
 
 ```
-### The folowing manipulations were carried out on the original data to change the existing variables and to add new ones:
+
+### • The folowing manipulations were carried out on the original data to change the existing variables and to add new ones:
 * The type of the variables *center1distance* and *guestreviewrating* were changed from 'string' to 'numeric'
 ```{r include=FALSE}
 # guestreviewrating separation
@@ -104,31 +101,39 @@ df2 <- df2 %>%
                            starrating == 3.5 | starrating == 4.0 ~ 'first class',
                            starrating == 4.5 | starrating == 5.0 ~ 'luxury'))
 ```
+
+### • Quality of the dataset - missing values overview and frequency distribution of numeric values
+
+```{r}
+df2 %>% 
+  skimr::skim_without_charts() 
+```
+
 ## Summary of the transformed dataset
 ```{r}
 datasummary(distance + starrating + actualrating + trueprice ~ Mean + Min + Max + SD, data = df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
-### Histogram for distances
+### • Histogram for distances
 ```{r}
 ggplot(data=df2, aes(x=distance)) + geom_histogram(fill='navyblue', color='white', bins = 35) + 
   labs(x='Distance', y='Count')
 ```
 
-### Histogram for starrating
+### • Histogram for starrating
 ```{r}
 ggplot(data=df2, aes(x=starrating)) + geom_histogram(fill='navyblue', color='white', bins = 35) + 
   labs(x='Stars', y='Count')
 ```
 
-### Histogram for guest ratings
+### • Histogram for guest ratings
 ```{r message=FALSE}
 ggplot(data=df2, aes(x=actualrating)) + geom_histogram(fill='navyblue', color='white') + 
   labs(x='Guest reviews', y='Count')
 ```
 
-### Histogram for prices
+### • Histogram for prices
 ```{r message=FALSE}
 ggplot(data=df2, aes(x=trueprice)) + geom_histogram(fill='navyblue', color='white') + 
   labs(x='Price', y='Count') 
@@ -136,31 +141,31 @@ ggplot(data=df2, aes(x=trueprice)) + geom_histogram(fill='navyblue', color='whit
   labs(x='Price', y='Count') + xlim(0, 1200) 
 ```
 
-### Accommodation type
+### • Accommodation type
 ```{r echo=FALSE}
 kable(count(df2,acctype_f) %>% arrange(desc(n)))
 ```
 
-### Country
+### • Country
 ```{r echo=FALSE}
 kable(count(df2, addresscountryname) %>% arrange(desc(n)))
 ```
 
-### Weekend and holiday
+### • Weekend and holiday
 ```{r echo=FALSE}
 kable(count(df2, weekend))
 ```
 ```{r echo=FALSE}
 kable(count(df2, holiday))
 ```
-### Year and month
+### • Year and month
 ```{r echo=FALSE}
 kable(count(df2, year))
 ```
 ```{r echo=FALSE}
 kable(count(df2, month))
 ```
-### Season and class
+### • Season and class
 ```{r echo=FALSE}
 kable(count(df2, season) %>% arrange(desc(n)))
 ```
@@ -169,17 +174,17 @@ kable(count(df2, class))
 ```
 
 ## Findings
-### Mean prices for countries
+### • Mean prices for countries
 ```{r}
 datasummary(trueprice*addresscountryname ~ Mean + Max + Min, data=df2)
 ```
 
-### Ratings for diff countries
+### • Ratings for diff countries
 ```{r}
 datasummary(actualrating*addresscountryname ~ Mean, data=df2)
 ```
 
-### Plot for diff years diff countries
+### • Plot for diff years diff countries
 ```{r}
 df3 <- aggregate(trueprice ~ addresscountryname + year, 
                  data=df2, 
@@ -191,13 +196,13 @@ ggplot(data = df3, aes(x=year, y=trueprice, fill=addresscountryname)) +
   geom_text(aes(label = round(trueprice)), vjust = -0.2)
 ```
 
-### Mean prices for diff seasons
+### • Mean prices for diff seasons
 ```{r}
 datasummary(trueprice*season ~ Mean, data=df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
-### Plot for classes
+### • Plot for classes
 ```{r message=FALSE}
 datasummary(trueprice*class ~ Mean, data = df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
