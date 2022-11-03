@@ -214,19 +214,28 @@ ggplot(data, aes(x="", y=prop, fill=class)) +
 ## *Binary variables*
 
 ### • Weekend and holiday
+### 36193 records were made on weekends (66%),  and 18754 - on weekdays (34%)
+
 ```{r echo=FALSE}
 kable(count(df2, weekend)) %>%
   kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
+
+### Only 21% (11728) of all observations were made on holidays.
+
 ```{r echo=FALSE}
 kable(count(df2, holiday)) %>%
   kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
 
-## 1.3 Findings
+## 1.3 Findings. 
+### For this project, we wanted to find the best deal among different types of accommodation in Central European countries. 
+### Consequently, we formulated the question: 
+* *How does the average price change for different values of explanatory variables?*
+
 ### • Mean prices for countries
 
-```{r echo=FALSE}
+```{r}
 datasummary(trueprice*country ~ Mean + Max + Min, data=df2)%>%
   kableExtra::kable_styling(latex_options = "hold_position")
 ```
