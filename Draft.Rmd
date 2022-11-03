@@ -148,7 +148,7 @@ ggplot(data=df2, aes(x=actualrating)) + geom_histogram(fill='navyblue', color='w
 ### The distribution of the prices is skewed to the right, therefore, we can conclude that the mean price is greater then the mode.
 ```{r echo=FALSE, message=FALSE}
 ggplot(data=df2, aes(x=trueprice)) + geom_histogram(fill='navyblue', color='white') + 
-  labs(x='Price', y='Count') + xlim(0, 1200) 
+  labs(x='Price fpr one night (in EUR)', y='Count') + xlim(0, 600) 
 ```
 
 ### • Year and month
@@ -159,6 +159,7 @@ kable(count(df2, year)) %>%
 ```
 
 ### Winter and spring are fully presented in the dataset, whereas there are no records for July, August, September, and October.
+
 ```{r echo=FALSE}
 kable(count(df2, month)) %>%
   kableExtra::kable_styling(position = "center", latex_options = "hold_position")
@@ -261,7 +262,7 @@ datasummary(trueprice*season ~ Mean, data=df2) %>%
 ```
 
 ### • Plot for classes
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE}
 datasummary(trueprice*class ~ Mean, data = df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
 ```
