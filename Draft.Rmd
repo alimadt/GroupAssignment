@@ -249,7 +249,9 @@ df3 <- aggregate(trueprice ~ country + year,
                  })
 ggplot(data = df3, aes(x=year, y=trueprice, fill=country)) + 
   geom_bar(stat='identity') + facet_wrap(~country) +
-  geom_text(aes(label = round(trueprice)), vjust = -0.2)
+  geom_text(aes(label = round(trueprice)), vjust = -0.2) +
+  scale_x_discrete() + ylim(0, 195) + 
+  labs(x='Year(2017,2018)', y='Price for one night (in EUR)', fill='Country')
 ```
 
 ### • Mean prices for diff seasons
@@ -263,7 +265,7 @@ datasummary(trueprice*season ~ Mean, data=df2) %>%
 datasummary(trueprice*class ~ Mean, data = df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
 ```
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE}
 ggplot(data = df2, aes(x=reorder(class, +trueprice), y=trueprice, fill = class)) + 
-  geom_bar(stat = 'summary') + labs(x='Class', y='Price', fill = 'Class')
+  geom_bar(stat = 'summary') + labs(x='Class', y='Price for 1 night (in EUR)', fill = 'Class')
 ```
