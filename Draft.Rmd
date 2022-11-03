@@ -152,41 +152,74 @@ ggplot(data=df2, aes(x=trueprice)) + geom_histogram(fill='navyblue', color='whit
 ```
 
 ### • Year and month
+### 22636 records from the dataset are for the year 2017 and 32311 - for 2018.
 ```{r echo=FALSE}
-kable(count(df2, year))
+kable(count(df2, year)) %>%
+  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
+
+### Winter and spring are fully presented in the dataset, whereas there are no records for July, August, September, and October.
 ```{r echo=FALSE}
-kable(count(df2, month))
+kable(count(df2, month)) %>%
+  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
 
 ## *Factor variables*
 
 ### • Accommodation type
+### There are 16 unique accommodation types in the dataset. The most numerous types are "Hotel",  "Apartment", "Guest House",  and "Bed and Breakfast". Together they make up 93% of all records.
 ```{r echo=FALSE}
-kable(count(df2,acctype_f) %>% arrange(desc(n)))
+kable(count(df2,acctype_f) %>% arrange(desc(n))) %>%
+  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
 
 ### • Country
+### The countries with the most records are Italy and Germany. Together they make up 66% of all records.
 ```{r echo=FALSE}
-kable(count(df2, country) %>% arrange(desc(n)))
+kable(count(df2, country) %>% arrange(desc(n))) %>%
+  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
 
 ### • Season and class
+### As we observed earlier, the dataset did not include two months for summer and two months for autumn, consequently, spring and winter have the most observations.
 ```{r echo=FALSE}
-kable(count(df2, season) %>% arrange(desc(n)))
+kable(count(df2, season) %>% arrange(desc(n))) %>%
+  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
+```
+
+### The most obsevations belong to 'comfort' class, which corresponds to 3 and 3.5 stars, and to 'first class', which corresponds to 4 and 4.5 stars.There are also 15889 missing values. They appeared, because the hotels with 0 stars were not used for the 'class' variable, as the mean price for them is higher than for places with 1, 1.5, 2, and 2.5 stars, which does not make sense. Therefore, these observations were omitted.
+```{r echo=FALSE}
+kable(count(df2, class)) %>%
+  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
 ```{r echo=FALSE}
-kable(count(df2, class))
+data <- data.frame(
+  class=c('comfort', 'first class', 'luxury', 'standard', 'tourist'),
+  value=c(17695, 14154, 2307, 4025, 877)
+)
+data <- data %>% 
+  arrange(desc(class)) %>%
+  mutate(prop = value / sum(data$value) *100) %>%
+  mutate(ypos = cumsum(prop)- 0.5*prop )
+
+ggplot(data, aes(x="", y=prop, fill=class)) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0) +
+  theme_void() + 
+  geom_text(aes(y = ypos, label = round(prop, 1)), color = "white", size=5) +
+  scale_fill_brewer(palette="Set1") + labs(fill="Class")
 ```
 
 ## *Binary variables*
 
 ### • Weekend and holiday
 ```{r echo=FALSE}
-kable(count(df2, weekend))
+kable(count(df2, weekend)) %>%
+  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
 ```{r echo=FALSE}
-kable(count(df2, holiday))
+kable(count(df2, holiday)) %>%
+  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
 
 ## 1.3 Findings
