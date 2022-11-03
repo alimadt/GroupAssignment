@@ -175,7 +175,7 @@ kable(count(df2,acctype_f) %>% arrange(desc(n))) %>%
 
 ### • Country
 ### The countries with the most records are Italy and Germany. Together they make up 66% of all records.
-```{r echo=FALSE}
+```{r}
 kable(count(df2, country) %>% arrange(desc(n))) %>%
   kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
@@ -192,6 +192,7 @@ kable(count(df2, season) %>% arrange(desc(n))) %>%
 kable(count(df2, class)) %>%
   kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
+
 ```{r echo=FALSE}
 data <- data.frame(
   class=c('comfort', 'first class', 'luxury', 'standard', 'tourist'),
@@ -224,9 +225,10 @@ kable(count(df2, holiday)) %>%
 
 ## 1.3 Findings
 ### • Mean prices for countries
+
 ```{r echo=FALSE}
-datasummary(trueprice*country ~ Mean + Max + Min, data=df2) %>%
-   kableExtra::kable_styling(latex_options = "hold_position")
+datasummary(trueprice*country ~ Mean + Max + Min, data=df2)%>%
+  kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
 ### • Plot for diff years diff countries
