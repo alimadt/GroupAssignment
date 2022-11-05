@@ -1,7 +1,7 @@
 ---
-title: "DRAFT"
-author: "Alima Dzhanybaeva"
-date: "2022-10-31"
+title: "Group assignment"
+author: "Alima Dzhanybaeva, Jana Hochel, Tasnim Murad"
+date: "2022-05-11"
 output:
   pdf_document:
          latex_engine: xelatex
@@ -49,7 +49,7 @@ df2 <- df %>% filter(addresscountryname %in%
 ```
 
 ### • The folowing manipulations were carried out on the original data to change the existing variables and to add new ones:
-* The type of the variables *center1distance* and *guestreviewsrating* were changed from 'string' to 'numeric'. The new variable names are *distance* and *actualrating * respectively.
+* The type of the variables *center1distance* and *guestreviewsrating* were changed from 'string' to 'numeric', and from 'string' to 'factor' for *addresscountryname*. The new variable names are *distance*, *actualrating * and *country* respectively.
 ```{r include=FALSE}
 # guestreviewrating separation
 df2 <- separate(df2, guestreviewsrating, ' /', into =
@@ -66,7 +66,7 @@ df2$distance <- as.numeric(df2$distance)
 df2$country <- as.factor(df2$addresscountryname)
 df2 <- select(df2, -addresscountryname)
 ```
-* The original *accommodationtype* variable was tranformed into new *acctype_f* factor variable.
+* The original *accommodationtype* variable was transformed into new *acctype_f* factor variable.
 ```{r}
 df2 <- separate(df2, accommodationtype, '@', into = 
                  c('word', 'acctype'))
@@ -244,12 +244,15 @@ kable(count(df2, holiday)) %>%
   kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
 
-## 1.3 Findings. 
+## 1.3 Analysis 
 ### For this project, we wanted to find the best deal among different types of accommodation in Central European countries. 
 ### Consequently, we formulated the following question: 
-* *How does the average price for accommodation change for different values of the following variables: year, country, distance, season, class?*
+* *How does the average price for accommodation change for different values of the following variables: year, country, distance, season, class, weekend?*
 
-### • How the price for accommodation changed for 7 Central European countries in 2018 in comparison with 2017.
+## *Findings*
+
+### • As we can see from the graph below, the price increased for 6 countires, Slovakia being the only case in which the price dropped.
+### The biggest jump in price was in Italy. In this country, the price in 2018 increased by 24 euros compared to 2017.
 ```{r}
 df3 <- aggregate(trueprice ~ country + year, 
                  data=df2, 
@@ -263,17 +266,14 @@ ggplot(data = df3, aes(x=year, y=trueprice, fill=country)) +
   labs(x='Year(2017,2018)', y='Price for one night (in EUR)', fill='Country')
 ```
 
-### As we can see from the graph, the price increased for 6 countires, Slovakia being the only case in which the price dropped.
-### The biggest jump in price was in Italy. In this country, the price in 2018 increased by 24 euros compared to 2017.
-
-### • Mean prices for countries
+### • The lowest price is 12 EUR per night (Czech Republic),  whereas the lowest average cost is 86 EUR (Poland). On average, Austrian accommodation is the most expensive with a mean price of 158 EUR.
 
 ```{r}
 datasummary(trueprice*country ~ Mean + Max + Min, data=df2)%>%
   kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
-### • Mean price/ distance
+### • The eminent negative relationship between price and distance from the city center can be tracked only until 7.5 miles. After that point, the dependence of the accommodation cost on the *distance* variable becomes vaguer, as the points are much more dispersed and do not follow a specific pattern. Therefore, we can conclude that on average, the cheapest accommodation is 7.5 miles far from the city center. 
 
 ```{r echo=FALSE, message=FALSE}
 ggplot(df2, aes(x = distance, y = trueprice))+
@@ -292,13 +292,16 @@ ggplot(df2, aes(x = distance, y = trueprice))+
   xlim(0,25)
 ```
 
-### • Mean prices for diff seasons
+### • The prices for accommodation in the chosen 7 Central European countries are on average the lowest during autumn and are highest during spring. The difference between the lowest and the highest value is 35 euros.
+
 ```{r echo=FALSE}
 datasummary(trueprice*season ~ Mean, data=df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
-### • Plot for classes
+### • As expected, the cheapest class is "tourist" (1 and 1.5 stars) with a mean price of 88 euros. However, the average cost for "standard" (2 and 2.5 stars) falls not that far apart from the best deal with the difference of only 5 euros. Conversely, the "luxury"  (5 stars) class is on average 140 euros more expensive than  "first class" (4 and 4.5 stars). 
+### Consequently, the difference between mean prices becomes bigger with the number of stars. 
+
 ```{r echo=FALSE}
 datasummary(trueprice*class ~ Mean, data = df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
@@ -308,10 +311,30 @@ ggplot(data = df2, aes(x=reorder(class, +trueprice), y=trueprice, fill = class))
   geom_bar(stat = 'summary') + labs(x='Class', y='Price for 1 night (in EUR)', fill = 'Class')
 ```
 
-### Weekend
-```{r}
+### • The average price for accommodation is 16 euros higher during weekends. Moreover, as we can see from the graph below: (1) the boxplot for weekends is comparatively taller than the one for weekdays, indicating that prices are more dispersed during the end of the week; (2) the upper quartile for weekends is farther from the median than for weekdays, meaning that the 75% percentile is higher.
+
+```{r echo=FALSE}
+df2 <- df2 %>%
+  mutate(weekend = case_when(weekend == 1 ~'weekend',
+                            weekend == 0 ~ 'weekday'))
+datasummary(trueprice*weekend ~ Mean, data = df2) %>%
+  kableExtra::kable_styling(latex_options = "hold_position")
+```
+```{r echo=FALSE}
 ggplot(data=df2, aes(x=weekend, y=trueprice, group=weekend))+
   geom_violin(trim=FALSE, fill='#A4A4A4', color="darkred")+
   geom_boxplot(width=0.1) + theme_minimal() + 
   labs(x="Weekend", y="Price for one night (in EUR)")
 ```
+
+## *Summary*
+### For the chosen 7 Central European countries (with the maximum value for the *distance* variable set to 35 miles and to 600 euros for *trueprice* variable)  following conclusions on the best deal accross different accommodation types were made:
+* Compared to other countries, the average prices in Slovakia do not tend to drastically jump.
+* On average, the cheapest deals can be found in Poland.
+* The optimal distance from the city center is 7,5 miles.
+* Autumn is the best season for finding advantageous offers.
+* "Tourist" is the class with the lowest prices, however, "standard" is not much more expensive.
+* Accommodation on weekdays is not only cheaper, but the prices are also not as dispersed as on weekends.
+
+
+
