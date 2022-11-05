@@ -111,8 +111,12 @@ df2 %>%
 ```
 
 ### • Some value are non-zero but include zeros. The next table checks the zero values and the quantity of unique values.
-```{r}
-kable(funModeling::df_status(df))
+```{r echo=FALSE, include=FALSE}
+zeros<-funModeling::df_status(df2)
+```
+
+```{r echo=FALSE, include=TRUE}
+kable(zeros)
 ```
 
 ## • Summary for the main variables in the transformed dataset
