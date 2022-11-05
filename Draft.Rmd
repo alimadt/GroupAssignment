@@ -260,8 +260,8 @@ kable(count(df2, holiday)) %>%
 ### Correlation - what we can expect we opting for higher price?
 ```{r echo=FALSE}
 # subset
-df3<-df2[c("price","trueprice","actualrating","rating_reviewcount","distance")]
-correlationt<-funModeling::correlation_table(data=df3, target="price") 
+df3<-df2[c("trueprice","actualrating","rating_reviewcount","distance")]
+correlationt<-funModeling::correlation_table(data=df3, target="trueprice") 
 ```
 ```{r echo=FALSE}
 kable(correlationt)
