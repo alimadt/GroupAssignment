@@ -186,27 +186,27 @@ kable(count(df2, month)) %>%
 
 ```{r echo=FALSE}
 kable(count(df2,acctype_f) %>% arrange(desc(n))) %>%
-  kableExtra::kable_styling(latex_options = "hold_position")
+  kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
 
 ### • Country
 ### The countries with the most records are Italy and Germany. Together they make up 66% of all records.
-```{r}
+```{r echo=FALSE}
 kable(count(df2, country) %>% arrange(desc(n))) %>%
-  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
+  kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
 
 ### • Season and class
 ### As we observed earlier, the dataset did not include two months for summer and two months for autumn, consequently, spring and winter have the most observations.
 ```{r echo=FALSE}
 kable(count(df2, season) %>% arrange(desc(n))) %>%
-  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
+  kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
 
 ### The most obsevations belong to 'comfort' class, which corresponds to 3 and 3.5 stars, and to 'first class', which corresponds to 4 and 4.5 stars. There are also 15889 missing values. They appeared, because the hotels with 0 stars were not used for the 'class' variable, as the mean price for them is higher than for places with 1, 1.5, 2, and 2.5 stars, which does not make sense. Therefore, these observations were omitted.
 ```{r echo=FALSE}
 kable(count(df2, class)) %>%
-  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
+  kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
 
 ```{r echo=FALSE}
@@ -249,7 +249,7 @@ kable(count(df2, holiday)) %>%
 ### Consequently, we formulated the following question: 
 * *How does the average price for accommodation change for different values of the following variables: year, country, distance, season, class, weekend?*
 
-## *Findings*
+## *Findings:*
 
 ### • As we can see from the graph below, the price increased for 6 countires, Slovakia being the only case in which the price dropped.
 ### The biggest jump in price was in Italy. In this country, the price in 2018 increased by 24 euros compared to 2017.
@@ -269,9 +269,9 @@ ggplot(data = df3, aes(x=year, y=trueprice, fill=country)) +
 
 ### • The lowest price is 12 EUR per night (Czech Republic),  whereas the lowest average cost is 86 EUR (Poland). On average, Austrian accommodation is the most expensive with a mean price of 158 EUR.
 
-```{r}
-datasummary(trueprice*country ~ Mean + Max + Min, data=df2)%>%
-  kableExtra::kable_styling(latex_options = "hold_position")
+```{r echo=FALSE}
+datasummary(trueprice*country ~ Mean + Max + Min, data=df2) %>%
+  kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
 
 ### • The eminent negative relationship between price and distance from the city center can be tracked only until 7.5 miles. After that point, the dependence of the accommodation cost on the *distance* variable becomes vaguer, as the points are much more dispersed and do not follow a specific pattern. Therefore, we can conclude that on average, the cheapest accommodation is 7.5 miles far from the city center. 
@@ -290,7 +290,7 @@ ggplot(df2, aes(x = distance, y = trueprice))+
 
 ```{r echo=FALSE}
 datasummary(trueprice*season ~ Mean, data=df2) %>%
-   kableExtra::kable_styling(latex_options = "hold_position")
+  kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
 
 ### • As expected, the cheapest class is "tourist" (1 and 1.5 stars) with a mean price of 88 euros. However, the average cost for "standard" (2 and 2.5 stars) falls not that far apart from the best deal with the difference of only 5 euros. Conversely, the "luxury"  (5 stars) class is on average 140 euros more expensive than  "first class" (4 and 4.5 stars). 
