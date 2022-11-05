@@ -110,7 +110,7 @@ df2 %>%
   skimr::skim_without_charts() 
 ```
 
-### • Some value are non-zero but include zeros. The next table checks the zero values and the quantity of unique values.
+### • Some value are not blank but include zeros and inf. The next table checks these entries as well as unique values.
 ```{r echo=FALSE, include=FALSE}
 zeros<-funModeling::df_status(df2)
 ```
