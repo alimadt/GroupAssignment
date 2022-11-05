@@ -166,7 +166,7 @@ ggplot(data=df2, aes(x=trueprice)) + geom_histogram(fill='navyblue', color='whit
 ```
 
 ### • Year and month
-### 22636 records from the dataset are for the year 2017 and 32311 - for 2018.
+### 22270 records from the dataset are for the year 2017 and 31570 - for 2018.
 ```{r echo=FALSE}
 kable(count(df2, year)) %>%
   kableExtra::kable_styling(position = "center", latex_options = "hold_position")
@@ -186,7 +186,7 @@ kable(count(df2, month)) %>%
 
 ```{r echo=FALSE}
 kable(count(df2,acctype_f) %>% arrange(desc(n))) %>%
-  kableExtra::kable_styling(position = "center", latex_options = "hold_position")
+  kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
 ### • Country
@@ -253,7 +253,8 @@ kable(count(df2, holiday)) %>%
 
 ### • As we can see from the graph below, the price increased for 6 countires, Slovakia being the only case in which the price dropped.
 ### The biggest jump in price was in Italy. In this country, the price in 2018 increased by 24 euros compared to 2017.
-```{r}
+
+```{r echo=FALSE}
 df3 <- aggregate(trueprice ~ country + year, 
                  data=df2, 
                  function(x) { 
@@ -280,16 +281,9 @@ ggplot(df2, aes(x = distance, y = trueprice))+
   stat_summary_bin(fun = 'mean', bins = 80, 
                    geom = 'point', color = 'red',
                    size = 2) + 
-  labs(x='Distance from the city center', y='Price for one night(in EUR)')
-```
-
-```{r echo=FALSE, message=FALSE}
-ggplot(df2, aes(x = distance, y = trueprice))+
-  stat_summary_bin(fun = 'mean', bins = 50, 
-                   geom = 'point', color = 'red',
-                   size = 2) + 
-  labs(x='Distance from the city center', y='Price for one night(in EUR)') +
-  xlim(0,25)
+  labs(x='Distance from the city center (in miles)', y='Price for one night (in EUR)') +
+  scale_x_continuous(limits = c(0, 35),
+                     breaks=seq(from=0, to=35, by=2.5))
 ```
 
 ### • The prices for accommodation in the chosen 7 Central European countries are on average the lowest during autumn and are highest during spring. The difference between the lowest and the highest value is 35 euros.
