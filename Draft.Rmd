@@ -323,25 +323,7 @@ ggplot(data = df3, aes(x=year, y=trueprice, fill=country)) +
   labs(x='Year(2017,2018)', y='Price for one night (in EUR)', fill='Country')
 ```
 
-## 1.4.2 Country
-
-
-### • The lowest price is 12 EUR per night (Czech Republic),  whereas the lowest average cost is 86 EUR (Poland). On average, Austrian accommodation is the most expensive with a mean price of 158 EUR.
-
-```{r echo=FALSE}
-datasummary(trueprice*country ~ Mean + Max + Min, data=df2) %>%
-  kableExtra::kable_styling(latex_options = "HOLD_position")
-```
-
-# Graph to show the correlation pattern by each country:
-```{r echo=FALSE}
-ggplot(corr_table1, aes(x = correlation ,
-                       y = fct_reorder(country, correlation))) +
-  geom_point(color = 'red', size = 2)+
-  labs(y='Countries',x='Correlation')
-```
-
-## 1.4.3 Distance
+## 1.4.2 Distance
 
 ### • The eminent negative relationship between price and distance from the city center can be tracked only until 7.5 miles. After that point, the dependence of the accommodation cost on the *distance* variable becomes vaguer, as the points are much more dispersed and do not follow a specific pattern. Therefore, we can conclude that on average, the cheapest accommodation is 7.5 miles far from the city center. 
 
@@ -376,6 +358,24 @@ corr_table2 <- cor(df2[, c('trueprice','actualrating','distance')])
 ```
 ```{r echo=FALSE}
 kable(corr_table2)
+```
+
+## 1.4.3 Country
+
+
+### • The lowest price is 12 EUR per night (Czech Republic),  whereas the lowest average cost is 86 EUR (Poland). On average, Austrian accommodation is the most expensive with a mean price of 158 EUR.
+
+```{r echo=FALSE}
+datasummary(trueprice*country ~ Mean + Max + Min, data=df2) %>%
+  kableExtra::kable_styling(latex_options = "HOLD_position")
+```
+
+# Graph to show the correlation pattern by each country:
+```{r echo=FALSE}
+ggplot(corr_table1, aes(x = correlation ,
+                       y = fct_reorder(country, correlation))) +
+  geom_point(color = 'red', size = 2)+
+  labs(y='Countries',x='Correlation')
 ```
 
 ## 1.5 Hypothesis testing
