@@ -184,6 +184,12 @@ kable(count(df2, year)) %>%
 kable(count(df2, month)) %>%
   kableExtra::kable_styling(position = "center", latex_options = "hold_position")
 ```
+###2. There is no statistically significant difference in the price of hotels between summer and winter season
+```{r echo=FALSE}
+t.test(df2$trueprice [df2$season=="winter"],df2$trueprice [df2$season=="summer"], mu=0, alt='two.sided', conf=0.95, paired=F)
+#Null Hypothesis is rejected 
+
+```
 
 ## *Factor variables*
 
@@ -268,6 +274,7 @@ kable(correlationt)
 ```
 #### We may see that higher price is linked to proximity to the city center, higher rating, and more reviews.
 
+## Time
 ### • As we can see from the graph below, the price increased for 6 countires, Slovakia being the only case in which the price dropped.
 ### The biggest jump in price was in Italy. In this country, the price in 2018 increased by 24 euros compared to 2017.
 
@@ -284,12 +291,26 @@ ggplot(data = df3, aes(x=year, y=trueprice, fill=country)) +
   labs(x='Year(2017,2018)', y='Price for one night (in EUR)', fill='Country')
 ```
 
+## Hypothesis testing for Time
+
+###1. Is there any statistical significant difference in the hotel price per night between year 2017 and 2018
+```{r echo=FALSE}
+t.test(df2$trueprice [df2$year=="2017"],df2$trueprice [df2$year=="2018"], mu=0, alt='two.sided', conf=0.95, paired=F)
+#(welsch1)
+#Null Hypothesis is rejected though the t-statistic is insignificant 
+```
+
+## Country
+
+
 ### • The lowest price is 12 EUR per night (Czech Republic),  whereas the lowest average cost is 86 EUR (Poland). On average, Austrian accommodation is the most expensive with a mean price of 158 EUR.
 
 ```{r echo=FALSE}
 datasummary(trueprice*country ~ Mean + Max + Min, data=df2) %>%
   kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
+
+## Distance
 
 ### • The eminent negative relationship between price and distance from the city center can be tracked only until 7.5 miles. After that point, the dependence of the accommodation cost on the *distance* variable becomes vaguer, as the points are much more dispersed and do not follow a specific pattern. Therefore, we can conclude that on average, the cheapest accommodation is 7.5 miles far from the city center. 
 
@@ -301,6 +322,35 @@ ggplot(df2, aes(x = distance, y = trueprice))+
   labs(x='Distance from the city center (in miles)', y='Price for one night (in EUR)') +
   scale_x_continuous(limits = c(0, 35),
                      breaks=seq(from=0, to=35, by=2.5))
+```
+
+###1. Find the correlation between truelprice and distance 
+```{r echo=FALSE}
+corr_table1 <- df2 %>% 
+  select(country, trueprice, distance) %>% 
+  group_by(country) %>% 
+  summarise(correlation = cor(trueprice,distance))
+```
+
+```{r echo=FALSE}
+kable(corr_table1)
+```
+# Graph to show the correlation pattern by each country:
+```{r echo=FALSE}
+ggplot(corr_table1, aes(x = correlation ,
+                       y = fct_reorder(country, correlation))) +
+  geom_point(color = 'red', size = 2)+
+  labs(y='Countries',x='Correlation')
+```
+
+#### As we may see, staying in the center is less valued in Austria and Slovakia.
+
+###2. Find the correlation between guest reviewing report with distance and price
+```{r echo=FALSE}
+corr_table2 <- cor(df2[, c('trueprice','actualrating','distance')])
+```
+```{r echo=FALSE}
+kable(corr_table2)
 ```
 
 ### • The prices for accommodation in the chosen 7 Central European countries are on average the lowest during autumn and are highest during spring. The difference between the lowest and the highest value is 35 euros.
@@ -337,6 +387,7 @@ ggplot(data=df2, aes(x=weekend, y=trueprice, group=weekend))+
   geom_boxplot(width=0.1) + theme_minimal() + 
   labs(x="Weekend", y="Price for one night (in EUR)")
 ```
+
 
 ## *Summary*
 ### For the chosen 7 Central European countries (with the maximum value for the *distance* variable set to 35 miles and to 600 euros for *trueprice* variable)  following conclusions on the best deal accross different accommodation types were made:
