@@ -13,8 +13,6 @@ library(modelsummary)
 library(dplyr)
 library(knitr)
 library(htmlTable)
-library(reshape)
-library(funModeling)
 ```
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
