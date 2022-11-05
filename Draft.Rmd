@@ -258,8 +258,11 @@ kable(count(df2, holiday)) %>%
 ## *Findings:*
 
 ### Correlation - what we can expect we opting for higher price?
+#### We may see that higher price is linked to proximity to the city center, higher rating, and more reviews.
 ```{r echo=FALSE}
-correlationt<-funModeling::correlation_table(data=df2, target="price") 
+# subset
+df3<-df2[c("price","trueprice","actualrating","rating_reviewcount","distance")]
+correlationt<-funModeling::correlation_table(data=df3, target="price") 
 ```
 ```{r echo=FALSE}
 kable(correlationt)
