@@ -348,6 +348,13 @@ corr_table1 <- df2 %>%
 ```{r echo=FALSE}
 kable(corr_table1)
 ```
+# Graph to show the correlation pattern by each country:
+```{r echo=FALSE}
+ggplot(corr_table1, aes(x = correlation ,
+                       y = fct_reorder(country, correlation))) +
+  geom_point(color = 'red', size = 2)+
+  labs(y='Countries',x='Correlation')
+```
 
 
 #### As we may see, staying in the center is less valued in Austria and Slovakia.
@@ -368,14 +375,6 @@ kable(corr_table2)
 ```{r echo=FALSE}
 datasummary(trueprice*country ~ Mean + Max + Min, data=df2) %>%
   kableExtra::kable_styling(latex_options = "HOLD_position")
-```
-
-# Graph to show the correlation pattern by each country:
-```{r echo=FALSE}
-ggplot(corr_table1, aes(x = correlation ,
-                       y = fct_reorder(country, correlation))) +
-  geom_point(color = 'red', size = 2)+
-  labs(y='Countries',x='Correlation')
 ```
 
 ## 1.5 Hypothesis testing
