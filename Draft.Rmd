@@ -258,7 +258,6 @@ kable(count(df2, holiday)) %>%
 ## *Findings:*
 
 ### Correlation - what we can expect we opting for higher price?
-#### We may see that higher price is linked to proximity to the city center, higher rating, and more reviews.
 ```{r echo=FALSE}
 # subset
 df3<-df2[c("price","trueprice","actualrating","rating_reviewcount","distance")]
@@ -267,6 +266,7 @@ correlationt<-funModeling::correlation_table(data=df3, target="price")
 ```{r echo=FALSE}
 kable(correlationt)
 ```
+#### We may see that higher price is linked to proximity to the city center, higher rating, and more reviews.
 
 ### • As we can see from the graph below, the price increased for 6 countires, Slovakia being the only case in which the price dropped.
 ### The biggest jump in price was in Italy. In this country, the price in 2018 increased by 24 euros compared to 2017.
