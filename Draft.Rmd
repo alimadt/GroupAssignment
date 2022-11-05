@@ -172,6 +172,7 @@ ggplot(data=df2, aes(x=actualrating)) + geom_histogram(fill='navyblue', color='w
 ggplot(data=df2, aes(x=trueprice)) + geom_histogram(fill='navyblue', color='white') + 
   labs(x='Price for one night (in EUR)', y='Count') + xlim(0, 600) 
 ```
+\newpage
 
 ### 1.3.5 Year and month
 ### 22270 records from the dataset are for the year 2017 and 31570 - for 2018.
