@@ -257,6 +257,14 @@ kable(count(df2, holiday)) %>%
 
 ## *Findings:*
 
+### Correlation - what we can expect we opting for higher price?
+```{r echo=FALSE}
+correlationt<-funModeling::correlation_table(data=df2, target="price") 
+```
+```{r echo=FALSE}
+kable(correlationt)
+```
+
 ### • As we can see from the graph below, the price increased for 6 countires, Slovakia being the only case in which the price dropped.
 ### The biggest jump in price was in Italy. In this country, the price in 2018 increased by 24 euros compared to 2017.
 
