@@ -36,14 +36,9 @@ description <- data.frame(variables, info, type)
 kable(description, caption = "Description of the main variables in the original dataset")
 ```
 
-### • Some value are non-zero but include zeros. The next table checks the zero values and the quantity of unique values.
 ```{r include=FALSE}
 df <- read.csv('https://osf.io/yzntm/download')
 ```
-```{r}
-kable(funModeling::df_status(df))
-```
-
 ## 1.2 Dataset for 7 Central European countries
 ### • For our analysis we used 7 Central European countries: Czech Republic, Germany, Italy, Hungary, Austria, Poland, Slovakia.
 ```{r}
@@ -113,6 +108,11 @@ df2$class <- as.factor(df2$class)
 ```{r}
 df2 %>% 
   skimr::skim_without_charts() 
+```
+
+### • Some value are non-zero but include zeros. The next table checks the zero values and the quantity of unique values.
+```{r}
+kable(funModeling::df_status(df))
 ```
 
 ## • Summary for the main variables in the transformed dataset
