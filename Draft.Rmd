@@ -118,17 +118,19 @@ zeros<-funModeling::df_status(df2)
 ```{r echo=FALSE, include=TRUE}
 kable(zeros)
 ```
+\newpage
+
+### Frequency plot of observations
+
+```{r}
+funModeling::plot_num(df2)
+```
 
 ## • Summary for the main variables in the transformed dataset
 ## *Numeric variables*
 ```{r echo=FALSE}
 datasummary(distance + starrating + actualrating + trueprice ~ Mean + Min + Max + SD, data = df2) %>%
    kableExtra::kable_styling(latex_options = "hold_position")
-```
-### Plotting frequency of observations
-
-```{r}
-funModeling::plot_num(df2)
 ```
 ### There are prominent outliers for *distance* and *true price* variables, therefore, the dataset was transformed, setting the maximum values at the 99% percentile (35 miles and 600 EUR respectively).
 
