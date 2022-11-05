@@ -203,7 +203,7 @@ kable(count(df2, season) %>% arrange(desc(n))) %>%
   kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
 
-### The most obsevations belong to 'comfort' class, which corresponds to 3 and 3.5 stars, and to 'first class', which corresponds to 4 and 4.5 stars. There are also 15889 missing values. They appeared, because the hotels with 0 stars were not used for the 'class' variable, as the mean price for them is higher than for places with 1, 1.5, 2, and 2.5 stars, which does not make sense. Therefore, these observations were omitted.
+### The most obsevations belong to 'comfort' class, which corresponds to 3 and 3.5 stars, and to 'first class', which corresponds to 4 and 4.5 stars. There are also 15720 missing values. They appeared, because the hotels with 0 stars were not used for the 'class' variable, as the mean price for them is higher than for places with 1, 1.5, 2, and 2.5 stars, which does not make sense. Therefore, these observations were omitted.
 ```{r echo=FALSE}
 kable(count(df2, class)) %>%
   kableExtra::kable_styling(latex_options = "HOLD_position")
